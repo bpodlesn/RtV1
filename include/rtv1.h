@@ -19,10 +19,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include "../libft/src/libft.h"
-# define WINW 800
+# define WINW 1200
 # define WINH 800
-# define HALF_WINW 400
-# define HALF_WINH 800 
+# define HALF_WINW WINW / 2
+# define HALF_WINH WINH / 2
 # define VIEW_W 1
 # define VIEW_H 1
 # define D 1
@@ -31,7 +31,8 @@ typedef struct	s_sdl
 {
 	SDL_Window		*win;
 	SDL_Renderer	*rend;
-	SDL_Texture		*texture;
+	SDL_Texture		*fillscreen;
+	SDL_Surface		*surf;
 	SDL_Event		event;
 }				t_sdl;
 
@@ -41,6 +42,14 @@ typedef	struct	s_vector
 	double		y;
 	double		z;
 }				t_vector;
+
+typedef struct	s_light
+{
+	char		*type;
+	double		intensivity;
+	t_vector	pos;
+	t_vector	dir;
+}				t_light;
 
 typedef struct	s_color
 {
@@ -64,6 +73,7 @@ typedef	struct	s_sphere
 	t_vector	pos;
 	double		radius;
 	t_color		color;
+	int			spec;
 }				t_sphere;
 
 typedef struct	s_ray_dir
@@ -74,13 +84,22 @@ typedef struct	s_ray_dir
 typedef struct	s_main
 {
 	int			done;
+	t_light		*light;
 	t_sphere	*sphere;
+	t_vector	normal;
 	t_cam		cam;
 	t_sdl		sdl;
 	t_ray_dir	dir;
+	t_vector	l;
+	t_vector	p;
+	t_vector	r;
+	t_vector	v;
 	t_viewport	viewport;
 	double		t1;
 	double		t2;
+	int			*screencolor;
 }				t_main;
 
+
+double	dot(t_vector first, t_vector second);
 #endif

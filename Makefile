@@ -39,6 +39,7 @@ _DEPS = rtv1.h
 DEPS = $(patsubst %,$(HEADER)/%,$(_DEPS))
 
 SOURCES =  main.c \
+			math.c \
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
