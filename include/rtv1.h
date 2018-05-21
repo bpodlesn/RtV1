@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:21:02 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/08 18:45:21 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/16 17:56:44 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include "../libft/src/libft.h"
-# define WINW 1200
+# define WINW 800
 # define WINH 800
 # define HALF_WINW WINW / 2
 # define HALF_WINH WINH / 2
@@ -90,6 +90,7 @@ typedef struct	s_main
 	t_cam		cam;
 	t_sdl		sdl;
 	t_ray_dir	dir;
+	t_vector	oc;
 	t_vector	l;
 	t_vector	p;
 	t_vector	r;
@@ -97,9 +98,31 @@ typedef struct	s_main
 	t_viewport	viewport;
 	double		t1;
 	double		t2;
+	double		closest_t;
+	int			closest_sphere;
+	int 		go;
 	int			*screencolor;
+	int 		shadow;
 }				t_main;
 
 
 double	dot(t_vector first, t_vector second);
+void	minus_vect(t_vector first, t_vector second, t_vector *result);
+double	find_vect_lenght(t_vector vec);
+void	rewrite_vect_and_mult(t_vector *first, t_vector second, double i);
+void	rewrite_vect_and_div(t_vector *first, t_vector second, double i);
+void	rewrite_vect(t_vector *first, t_vector second);
+void	mult_vect(t_vector *first, double i);
+void 	div_vect(t_vector *first, double i);
+void	update_screen(t_main main);
+t_main			key(t_main main);
+t_main			create_sdl(t_main main);
+t_main	canvastoviewport(int x, int y, t_main main);
+t_main	find_r(t_main main);
+t_main	find_normale(t_main main, int i);
+t_main	find_p(t_main main, double closest_t);
+void	set_viewport_params_and_cam(t_main *main);
+t_main	set_spheres_params(t_main main);
+t_main	lighter(t_main main);
+void	rtv(t_main main);
 #endif

@@ -6,7 +6,7 @@
 #    By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 14:54:43 by bpodlesn          #+#    #+#              #
-#    Updated: 2018/05/03 12:42:54 by bpodlesn         ###   ########.fr        #
+#    Updated: 2018/05/16 15:09:14 by bpodlesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ DEPS = $(patsubst %,$(HEADER)/%,$(_DEPS))
 
 SOURCES =  main.c \
 			math.c \
+			trace_ray.c \
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

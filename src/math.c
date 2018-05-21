@@ -23,3 +23,50 @@ double	dot(t_vector first, t_vector second)
 	result = x[0] + x[1] + x[2];
 	return (result);
 }
+
+void	minus_vect(t_vector first, t_vector second, t_vector *result)
+{
+	result->x = first.x - second.x;
+	result->y = first.y - second.y;
+	result->z = first.z - second.z;
+}
+
+double	find_vect_lenght(t_vector vec)
+{
+	return (sqrt(pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2)));
+}
+
+void	rewrite_vect_and_mult(t_vector *first, t_vector second, double i)
+{
+	first->x = second.x * i;
+	first->y = second.y * i;
+	first->z = second.z * i;
+}
+
+void	mult_vect(t_vector *first, double i)
+{
+	first->x *= i;
+	first->y *= i;
+	first->z *= i;
+}
+
+void 	div_vect(t_vector *first, double i)
+{
+	first->x /= i;
+	first->y /= i;
+	first->z /= i;
+}
+
+void	rewrite_vect_and_div(t_vector *first, t_vector second, double i)
+{
+	first->x = second.x / i;
+	first->y = second.y / i;
+	first->z = second.z / i;
+}
+
+void	rewrite_vect(t_vector *first, t_vector second)
+{
+	first->x = second.x;
+	first->y = second.y;
+	first->z = second.z;
+}
