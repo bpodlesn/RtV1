@@ -31,6 +31,13 @@ void	minus_vect(t_vector first, t_vector second, t_vector *result)
 	result->z = first.z - second.z;
 }
 
+void	plus_vect(t_vector first, t_vector second, t_vector *result)
+{
+	result->x = first.x + second.x;
+	result->y = first.y + second.y;
+	result->z = first.z + second.z;
+}
+
 double	find_vect_lenght(t_vector vec)
 {
 	return (sqrt(pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2)));

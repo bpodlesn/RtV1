@@ -113,7 +113,7 @@ void	set_viewport_params_and_cam(t_main *main)
 	main->viewport.view.z = 1;
 	main->cam.cam.x = 0;
 	main->cam.cam.y = 0;
-	main->cam.cam.z = -5;
+	main->cam.cam.z = -100;
 	main->screencolor = malloc(sizeof(int) * (WINH * WINW));
 }
 
@@ -166,21 +166,22 @@ t_main	set_plane_params(t_main main)
 {
 	main.figure[4].type = ft_strdup("plane");
 	main.figure[4].pos.x = 0;
-	main.figure[4].pos.y = 0;
-	main.figure[4].pos.z = 4;
-	main.figure[4].color.r = 255;
-	main.figure[4].color.g = 255;
+	main.figure[4].pos.y = 1;
+	main.figure[4].pos.z = 5;
+	main.figure[4].color.r = 100;
+	main.figure[4].color.g = 0;
 	main.figure[4].color.b = 255;
 	main.figure[4].spec = 1000;
 	//cylinder
 	main.figure[5].type = ft_strdup("cylinder");
-	main.figure[5].pos.x = 2;
-	main.figure[5].pos.y = 0;
-	main.figure[5].pos.z = 4;
-	main.figure[5].color.r = 255;
-	main.figure[5].color.g = 255;
-	main.figure[5].color.b = 255;
+	main.figure[5].pos.x = 1;
+	main.figure[5].pos.y = 2;
+	main.figure[5].pos.z = 1;
+	main.figure[5].color.r = 100;
+	main.figure[5].color.g = 20;
+	main.figure[5].color.b = 100;
 	main.figure[5].spec = 1000;
+	main.figure[5].radius = 1;
 	return (main);
 }
 
@@ -191,8 +192,8 @@ t_main	lighter(t_main main)
 	main.light[1].type = ft_strdup("point");
 	main.light[1].intensivity = 0.6;
 	main.light[1].pos.x = 2;
-	main.light[1].pos.y = 2;
-	main.light[1].pos.z = 1;
+	main.light[1].pos.y = 1;
+	main.light[1].pos.z = 0;
 	main.light[2].type = ft_strdup("directional");
 	main.light[2].intensivity = 0.2;
 	main.light[2].pos.x = 1;
@@ -210,7 +211,7 @@ void	rtv(t_main main)
 {
 	main = create_sdl(main);
 	set_viewport_params_and_cam(&main);
-	main.figure = malloc(sizeof(t_figure) * 5);
+	main.figure = malloc(sizeof(t_figure) * 6);
 	main.light = malloc(sizeof(t_light) * 4);
 	main = set_figures_params(main);
 	main = lighter(main);

@@ -109,6 +109,7 @@ typedef struct	s_main
 
 double	dot(t_vector first, t_vector second);
 void	minus_vect(t_vector first, t_vector second, t_vector *result);
+void	plus_vect(t_vector first, t_vector second, t_vector *result);
 double	find_vect_lenght(t_vector vec);
 void	rewrite_vect_and_mult(t_vector *first, t_vector second, double i);
 void	rewrite_vect_and_div(t_vector *first, t_vector second, double i);
