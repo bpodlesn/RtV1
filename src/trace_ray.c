@@ -32,25 +32,33 @@ t_main		intersect_ray(t_main main, t_vector vector1, t_vector vector2, double ra
 	return (main);
 }
 
+double		calc_plane(t_main main, t_vector p, t_vector c, t_vector x)
+{
+	t_vector	v;
+	double 		t;
+
+	minus_vect(p, c, &v);
+	mult_vect(&x, -1);
+	t = dot(x, v) / dot(main.dir.dir, v);
+	return (t);
+}
+
 int			closest_t_and_shadow_sphere(t_main main, int shadow_sphere, int closest_sphere, double t_max)
 {
 	int i;
 	double t_min = 0.001;
 
 	i = 0;
-	// main.t1 = INFINITY;
-	// main.t2 = INFINITY;
 	double shadow_t = INFINITY;
 	closest_sphere = 1;
 
 	while (i < 4)
 	{
-		// if (i == closest_sphere)
-		// 	i++;
-		// minus_vect(main.cam.cam, main.sphere[i].pos, &main.oc);
-		minus_vect(main.p, main.sphere[i].pos, &main.oc);
-		main = intersect_ray(main, main.l, main.oc, main.sphere[i].radius);
-		// printf("%f\n", main.t1);
+		if (ft_strcmp("sphere", main.figure[i].type) == 0)
+		{
+			minus_vect(main.p, main.figure[i].pos, &main.oc);
+			main = intersect_ray(main, main.l, main.oc, main.figure[i].radius);
+		}
 		if (main.t1 > t_min && main.t1 < t_max && main.t1 < (shadow_t))
 		{
 			(shadow_t) = main.t1;
@@ -62,8 +70,6 @@ int			closest_t_and_shadow_sphere(t_main main, int shadow_sphere, int closest_sp
 			(shadow_sphere) = i;
 		}
 		i++;
-		// if (i == closest_sphere)
-		// 	i++;
 	}
 	return (shadow_sphere);
 }
@@ -77,8 +83,9 @@ double	compute_light(t_main main, int spec, int closest_sphere)
 	double t_max = INFINITY;
 	int shadow_sphere = -1;
 	// double	shadow_t = INFINITY;
+	closest_sphere = 2;
 
-	while (i1 < 3)
+	while (i1 < 4)
 	{
 		if (ft_strcmp(main.light[i1].type, "ambient") == 0)
 			j += main.light[i1].intensivity;
@@ -91,7 +98,6 @@ double	compute_light(t_main main, int spec, int closest_sphere)
 			}
 			else
 			{
-				// printf("HI\n");
 				rewrite_vect(&main.l, main.light[i1].dir);
 				t_max = INFINITY;
 			}
@@ -125,18 +131,18 @@ unsigned int 	return_col(t_main main, double comp_light, int closest_sphere)
 	unsigned int g;
 	unsigned int b;
 
-	if ((unsigned int)(main.sphere[closest_sphere].color.r * comp_light) > 255)
+	if ((unsigned int)(main.figure[closest_sphere].color.r * comp_light) > 255)
 		r = 255;
 	else
-		r = (unsigned int)(main.sphere[closest_sphere].color.r * comp_light);
-	if ((unsigned int)(main.sphere[closest_sphere].color.g * comp_light) > 255)
+		r = (unsigned int)(main.figure[closest_sphere].color.r * comp_light);
+	if ((unsigned int)(main.figure[closest_sphere].color.g * comp_light) > 255)
 		g = 255;
 	else
-		g = (unsigned int)(main.sphere[closest_sphere].color.g * comp_light);
-	if ((unsigned int)(main.sphere[closest_sphere].color.b * comp_light) > 255)
+		g = (unsigned int)(main.figure[closest_sphere].color.g * comp_light);
+	if ((unsigned int)(main.figure[closest_sphere].color.b * comp_light) > 255)
 		b = 255;
 	else
-		b = (unsigned int)(main.sphere[closest_sphere].color.b * comp_light);
+		b = (unsigned int)(main.figure[closest_sphere].color.b * comp_light);
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -145,11 +151,28 @@ void			closest_t_and_sphere(t_main main, double *closest_t, int *closest_sphere,
 	int i;
 
 	i = 0;
+	double closest_plane;
 
-	while (i < 4)
+	while (i < 5)
 	{
-		minus_vect(main.cam.cam, main.sphere[i].pos, &main.oc);
-		main = intersect_ray(main, main.dir.dir, main.oc, main.sphere[i].radius);
+		minus_vect(main.cam.cam, main.figure[i].pos, &main.oc);
+		if (ft_strcmp("sphere", main.figure[i].type) == 0)
+			main = intersect_ray(main, main.dir.dir, main.oc, main.figure[i].radius);
+		else if (ft_strcmp("plane", main.figure[i].type) == 0)
+		{
+			closest_plane = calc_plane(main, main.p, main.figure[i].pos, main.oc);
+			if (closest_plane > t_min && closest_plane < t_max && closest_plane < (*closest_t))
+			{
+				(*closest_t) = closest_plane;
+				(*closest_sphere) = i;
+			}
+			i++;
+			continue ;
+		}
+		else if (ft_strcmp("cylinder", main.figure[i].type) == 0)
+		{
+			main = cylinder_ray();
+		}
 		if (main.t1 > t_min && main.t1 < t_max && main.t1 < (*closest_t))
 		{
 			(*closest_t) = main.t1;
@@ -175,7 +198,7 @@ unsigned int	sphere_color(t_main main, int t_min, double t_max)
 		return (0);
 	main = find_p(main, closest_t);
 	main = find_normale(main, closest_sphere);
-	comp_light = compute_light(main, main.sphere[closest_sphere].spec, closest_sphere);
+	comp_light = compute_light(main, main.figure[closest_sphere].spec, closest_sphere);
 	return (return_col(main, comp_light, closest_sphere));	
 }
 

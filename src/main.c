@@ -93,7 +93,7 @@ t_main	find_r(t_main main)
 
 t_main	find_normale(t_main main, int i)
 {
-	minus_vect(main.p, main.sphere[i].pos, &main.normal);
+	minus_vect(main.p, main.figure[i].pos, &main.normal);
 	div_vect(&main.normal, find_vect_lenght(main.normal));
 	return (main);
 }
@@ -113,47 +113,74 @@ void	set_viewport_params_and_cam(t_main *main)
 	main->viewport.view.z = 1;
 	main->cam.cam.x = 0;
 	main->cam.cam.y = 0;
-	main->cam.cam.z = 0;
+	main->cam.cam.z = -5;
 	main->screencolor = malloc(sizeof(int) * (WINH * WINW));
 }
 
-t_main	set_spheres_params(t_main main)
+t_main	set_figures_params(t_main main)
 {
-	main.sphere[0].pos.x = 0;
-	main.sphere[0].pos.y = -1;
-	main.sphere[0].pos.z = 3;
-	main.sphere[0].radius = 1;
-	main.sphere[0].color.r = 255;
-	main.sphere[0].color.g = 0;
-	main.sphere[0].color.b = 0;
-	main.sphere[0].spec = 10;
+	main.figure[0].type = ft_strdup("sphere");
+	main.figure[0].pos.x = 0;
+	main.figure[0].pos.y = -1;
+	main.figure[0].pos.z = 3;
+	main.figure[0].radius = 1;
+	main.figure[0].color.r = 255;
+	main.figure[0].color.g = 0;
+	main.figure[0].color.b = 0;
+	main.figure[0].spec = 10;
 
-	main.sphere[1].pos.x = -2;
-	main.sphere[1].pos.y = 1;
-	main.sphere[1].pos.z = 3;
-	main.sphere[1].radius = 1;
-	main.sphere[1].color.r = 0;
-	main.sphere[1].color.g = 0;
-	main.sphere[1].color.b = 255;
-	main.sphere[1].spec = 500;
+	main.figure[1].type = ft_strdup("sphere");
+	main.figure[1].pos.x = -2;
+	main.figure[1].pos.y = 1;
+	main.figure[1].pos.z = 3;
+	main.figure[1].radius = 1;
+	main.figure[1].color.r = 0;
+	main.figure[1].color.g = 0;
+	main.figure[1].color.b = 255;
+	main.figure[1].spec = 500;
 
-	main.sphere[2].pos.x = 2;
-	main.sphere[2].pos.y = 1;
-	main.sphere[2].pos.z = 3;
-	main.sphere[2].radius = 1;
-	main.sphere[2].color.r = 0;
-	main.sphere[2].color.g = 255;
-	main.sphere[2].color.b = 0;
-	main.sphere[2].spec = 1000;
+	main.figure[2].type = ft_strdup("sphere");
+	main.figure[2].pos.x = 2;
+	main.figure[2].pos.y = 1;
+	main.figure[2].pos.z = 3;
+	main.figure[2].radius = 1;
+	main.figure[2].color.r = 0;
+	main.figure[2].color.g = 255;
+	main.figure[2].color.b = 0;
+	main.figure[2].spec = 1000;
 
-	main.sphere[3].pos.x = 0;
-	main.sphere[3].pos.y = -5001;
-	main.sphere[3].pos.z = 0;
-	main.sphere[3].radius = 5000;
-	main.sphere[3].color.r = 255;
-	main.sphere[3].color.g = 255;
-	main.sphere[3].color.b = 0;
-	main.sphere[3].spec = 1000;
+	main.figure[3].type = ft_strdup("sphere");
+	main.figure[3].pos.x = 0;
+	main.figure[3].pos.y = 0;
+	main.figure[3].pos.z = 3;
+	main.figure[3].radius = 1;
+	main.figure[3].color.r = 255;
+	main.figure[3].color.g = 255;
+	main.figure[3].color.b = 0;
+	main.figure[3].spec = 1000;
+	main = set_plane_params(main);
+	return (main);
+}
+
+t_main	set_plane_params(t_main main)
+{
+	main.figure[4].type = ft_strdup("plane");
+	main.figure[4].pos.x = 0;
+	main.figure[4].pos.y = 0;
+	main.figure[4].pos.z = 4;
+	main.figure[4].color.r = 255;
+	main.figure[4].color.g = 255;
+	main.figure[4].color.b = 255;
+	main.figure[4].spec = 1000;
+	//cylinder
+	main.figure[5].type = ft_strdup("cylinder");
+	main.figure[5].pos.x = 2;
+	main.figure[5].pos.y = 0;
+	main.figure[5].pos.z = 4;
+	main.figure[5].color.r = 255;
+	main.figure[5].color.g = 255;
+	main.figure[5].color.b = 255;
+	main.figure[5].spec = 1000;
 	return (main);
 }
 
@@ -164,13 +191,18 @@ t_main	lighter(t_main main)
 	main.light[1].type = ft_strdup("point");
 	main.light[1].intensivity = 0.6;
 	main.light[1].pos.x = 2;
-	main.light[1].pos.y = 1;
-	main.light[1].pos.z = 0;
+	main.light[1].pos.y = 2;
+	main.light[1].pos.z = 1;
 	main.light[2].type = ft_strdup("directional");
 	main.light[2].intensivity = 0.2;
-	main.light[2].dir.x = 1;
-	main.light[2].dir.y = 4;
-	main.light[2].dir.z = 4;
+	main.light[2].pos.x = 1;
+	main.light[2].pos.y = 4;
+	main.light[2].pos.z = 2;
+	main.light[3].type = ft_strdup("directional");
+	main.light[3].intensivity = 0.2;
+	main.light[3].dir.x = 1;
+	main.light[3].dir.y = 4;
+	main.light[3].dir.z = 2;
 	return (main);
 }
 
@@ -178,9 +210,9 @@ void	rtv(t_main main)
 {
 	main = create_sdl(main);
 	set_viewport_params_and_cam(&main);
-	main.sphere = malloc(sizeof(t_sphere) * 4);
-	main.light = malloc(sizeof(t_light) * 3);
-	main = set_spheres_params(main);
+	main.figure = malloc(sizeof(t_figure) * 5);
+	main.light = malloc(sizeof(t_light) * 4);
+	main = set_figures_params(main);
 	main = lighter(main);
 	main.go = 0;
 	while(!main.done)
