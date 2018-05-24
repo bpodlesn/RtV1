@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:21:02 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/16 17:56:44 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/24 14:41:50 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ typedef	struct	s_figure
 	t_vector	pos;
 	double		radius;
 	t_color		color;
-	int			spec;
+	double		spec;
+	t_vector	dir;
 }				t_figure;
 
 typedef struct	s_ray_dir
@@ -128,4 +129,7 @@ t_main	set_figures_params(t_main main);
 t_main	set_plane_params(t_main main);
 t_main	lighter(t_main main);
 void	rtv(t_main main);
+void	normalize(t_vector *vector);
+t_main	scene_1(t_main main);
+t_main	set_spheres_params(t_main main);
 #endif
