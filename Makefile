@@ -6,7 +6,7 @@
 #    By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 14:54:43 by bpodlesn          #+#    #+#              #
-#    Updated: 2018/05/25 14:20:30 by bpodlesn         ###   ########.fr        #
+#    Updated: 2018/05/29 17:06:35 by bpodlesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,15 @@ DEPS = $(patsubst %,$(HEADER)/%,$(_DEPS))
 
 SOURCES =  main.c \
 			math.c \
+			math_vect.c \
 			trace_ray.c \
 			scenes.c \
 			scene_2.c \
 			calc_prims.c \
 			ret_color.c \
 			update_screen.c \
+			key.c \
+			normal.c \
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

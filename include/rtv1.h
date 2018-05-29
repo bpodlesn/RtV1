@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:21:02 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/25 14:21:08 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/29 17:15:23 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@
 # define VIEW_H 1
 # define D 1
 # define PI 3.14159265359
+# define TYPE main.figure[i].type
+# define POS main.figure[i].pos
+# define RADIUS main.figure[i].radius
+# define FDIR main.figure[i].dir
+# define DIR main.dir.dir
+# define T_MIN main.t_min
+# define T_MAX main.t_max
+# define OC main.oc
+# define L main.l
 
 typedef struct	s_sdl
 {
@@ -49,12 +58,11 @@ typedef struct	s_light
 	char		*type;
 	double		intensivity;
 	t_vector	pos;
-	t_vector	dir;
 }				t_light;
 
 typedef struct	s_color
 {
-	int 		r;
+	int			r;
 	int			g;
 	int			b;
 }				t_color;
@@ -102,48 +110,51 @@ typedef struct	s_main
 	t_viewport	viewport;
 	double		t1;
 	double		t2;
+	double		t_min;
+	double		t_max;
 	double		closest_t;
 	int			closest_sphere;
-	int 		go;
+	int			go;
 	int			*screencolor;
-	int 		shadow;
+	int			shadow;
 	double		dist;
-	int 		counter;
+	int			counter;
 	double		k;
 }				t_main;
 
-
-double	dot(t_vector first, t_vector second);
-void	minus_vect(t_vector first, t_vector second, t_vector *result);
-void	plus_vect(t_vector first, t_vector second, t_vector *result);
-double	find_vect_lenght(t_vector vec);
-void	rewrite_vect_and_mult(t_vector *first, t_vector second, double i);
-void	rewrite_vect_and_div(t_vector *first, t_vector second, double i);
-void	rewrite_vect(t_vector *first, t_vector second);
-void	mult_vect(t_vector *first, double i);
-void 	div_vect(t_vector *first, double i);
-void	update_screen(t_main main);
-t_main	key(t_main main);
-t_main	create_sdl(t_main main);
-t_main	canvastoviewport(int x, int y, t_main main);
-t_main	find_r(t_main main);
-t_main	find_normale(t_main main, int i);
-t_main	find_p(t_main main, double closest_t);
-void	set_viewport_params_and_cam(t_main *main);
-t_main	set_figures_params(t_main main);
-t_main	set_plane_params(t_main main);
-t_main	lighter(t_main main);
-void	rtv(t_main main);
-void	normalize(t_vector *vector);
-t_main	scene_1(t_main main);
-t_main	set_spheres_params(t_main main);
-t_main	scene_2(t_main main);
-void	update_screen(t_main main);
-t_main		intersect_ray(t_main main, t_vector vector1, t_vector vector2, double radius);
-double		calc_plane(t_main main, t_vector x, int i);
-t_main		cylinder_ray(t_main main, double radius, int i, int k);
-unsigned int 	return_col(t_main main, double comp_light, int closest_sphere);
-unsigned int	what_color(t_main main, int t_min, double t_max);
-t_main		cone_ray(t_main main, int i);
+double			dot(t_vector first, t_vector second);
+void			minus_vect(t_vector first, t_vector second, t_vector *result);
+void			plus_vect(t_vector first, t_vector second, t_vector *result);
+double			find_vect_lenght(t_vector vec);
+void			rewrite_vect(t_vector *first, t_vector second);
+void			mult_vect(t_vector *first, double i);
+void			div_vect(t_vector *first, double i);
+void			update_screen(t_main main);
+void			cl_t_and_fig(t_main main, double *cl_t, int *cl_fig, int i);
+double			compute_light(t_main main, int spec, double j, int i1);
+t_main			key(t_main main);
+t_main			create_sdl(t_main main);
+t_main			canvastoviewport(int x, int y, t_main main);
+t_main			find_r(t_main main);
+t_main			find_normale(t_main main, int i);
+t_main			find_p(t_main main, double closest_t);
+void			set_viewport_params_and_cam(t_main *main);
+t_main			set_figures_params(t_main main, char str);
+t_main			set_plane_params(t_main main);
+t_main			lighter(t_main main);
+void			rtv(t_main main, char *av);
+void			normalize(t_vector *vector);
+t_main			scene_1(t_main main);
+t_main			set_spheres_params(t_main main);
+t_main			scene_2(t_main main);
+void			update_screen(t_main main);
+t_main			intersect_ray(t_main main, t_vector v1, t_vector v2,
+				double rad);
+double			calc_plane(t_main main, t_vector x, int i);
+t_main			cylinder_ray(t_main main, double radius, int i, int k);
+unsigned int	return_col(t_main main, double comp_light, int closest_sphere);
+unsigned int	what_color(t_main main);
+t_main			cone_ray(t_main main, int i, int k);
+t_main			scene_2_1(t_main main);
 
 #endif

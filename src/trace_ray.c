@@ -6,197 +6,117 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 15:08:26 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/25 15:56:43 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/29 17:09:10 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-
-t_main	find_normale(t_main main, int i)
+void			chk_closest_t(t_main main, double *cl_t, int *cl_fig, int i)
 {
-	t_vector a;
-	t_vector v;
-	double	 m;
-	double	 dist;
-
-	if (ft_strcmp(main.figure[i].type, "sphere") == 0)
+	if (main.t1 > T_MIN && main.t1 < T_MAX && main.t1 < (*cl_t))
 	{
-		minus_vect(main.p, main.figure[i].pos, &main.normal);
-		div_vect(&main.normal, find_vect_lenght(main.normal));
+		(*cl_t) = main.t1;
+		(*cl_fig) = i;
 	}
-	else if (ft_strcmp(main.figure[i].type, "plane")  == 0)
+	if (main.t2 > T_MIN && main.t2 < T_MAX && main.t2 < (*cl_t))
 	{
-		rewrite_vect(&main.normal, main.figure[i].dir);
-		mult_vect(&main.normal, -1.0);
+		(*cl_t) = main.t2;
+		(*cl_fig) = i;
 	}
-	else if (ft_strcmp(main.figure[i].type, "cylinder") == 0)
-	{
-		if (main.t1 > main.t2)
-			dist = main.t2;
-		else
-			dist = main.t1;
-		minus_vect(main.p, main.figure[i].pos, &a);
-		m = dot(main.dir.dir, main.figure[i].dir) * dist + dot(a, main.figure[i].dir);
-		rewrite_vect(&v, main.figure[i].dir);
-		mult_vect(&v, m);
-		minus_vect(a, v, &main.normal);
-		normalize(&main.normal);
-	}
-	else if (ft_strcmp(main.figure[i].type, "cone") == 0)
-	{
-		if (main.t1 > main.t2)
-			dist = main.t2;
-		else
-			dist = main.t1;
-		minus_vect(main.p, main.figure[i].pos, &a);
-		m = dot(main.dir.dir, main.figure[i].dir) * dist + dot(a, main.figure[i].dir);
-		rewrite_vect(&v, main.figure[i].dir);
-		mult_vect(&v, m);
-		minus_vect(a, v, &main.normal);
-		mult_vect(&v, m*main.k*main.k);
-		minus_vect(main.normal, v, &main.normal);
-		normalize(&main.normal);
-	}
-	return (main);
 }
 
-void			closest_t_and_sphere(t_main main, double *closest_t, int *closest_sphere, int t_min, double t_max)
+void			cl_t_and_fig(t_main main, double *cl_t, int *cl_fig, int i)
 {
-	int i;
+	double		cl_pl;
 
-	i = 0;
-	double closest_plane;
-
-	while (i < main.counter)
+	T_MIN = 1;
+	T_MAX = INFINITY;
+	while (++i < main.counter)
 	{
-		minus_vect(main.cam.cam, main.figure[i].pos, &main.oc);
-		if (ft_strcmp("sphere", main.figure[i].type) == 0)
-			main = intersect_ray(main, main.dir.dir, main.oc, main.figure[i].radius);
-		else if (ft_strcmp("plane", main.figure[i].type) == 0)
+		minus_vect(main.cam.cam, POS, &OC);
+		if (ft_strcmp("sphere", TYPE) == 0)
+			main = intersect_ray(main, main.dir.dir, OC, RADIUS);
+		else if (ft_strcmp("plane", TYPE) == 0)
 		{
-			closest_plane = calc_plane(main, main.oc, i);
-			if (closest_plane > t_min && closest_plane < t_max && closest_plane < (*closest_t))
+			cl_pl = calc_plane(main, OC, i);
+			if (cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (*cl_t))
 			{
-				(*closest_t) = closest_plane;
-				(*closest_sphere) = i;
+				(*cl_t) = cl_pl;
+				(*cl_fig) = i;
 			}
-			i++;
 			continue ;
 		}
-		else if (ft_strcmp("cylinder", main.figure[i].type) == 0)
-			main = cylinder_ray(main, main.figure[i].radius, i, 0);
-		else if (ft_strcmp("cone", main.figure[i].type) == 0)
-			main = cone_ray(main, i);
-		if (main.t1 > t_min && main.t1 < t_max && main.t1 < (*closest_t))
-		{
-			(*closest_t) = main.t1;
-			(*closest_sphere) = i;
-		}
-		if (main.t2 > t_min && main.t2 < t_max && main.t2 < (*closest_t))
-		{
-			(*closest_t) = main.t2;
-			(*closest_sphere) = i;
-		}
-		i++;
+		else if (ft_strcmp("cylinder", TYPE) == 0)
+			main = cylinder_ray(main, RADIUS, i, 0);
+		else if (ft_strcmp("cone", TYPE) == 0)
+			main = cone_ray(main, i, 0);
+		chk_closest_t(main, cl_t, cl_fig, i);
 	}
 }
 
-int			closest_t_and_shadow_sphere(t_main main, int shadow_sphere, int closest_sphere, double t_max)
+int				cl_t_s_fig(t_main main, int i, double s_t, int s_fig)
 {
-	int i;
-	double t_min = 0.001;
-	double	closest_plane;
+	double		cl_pl;
 
-	i = 0;
-	double shadow_t = INFINITY;
-	closest_sphere = 1;
-
-	while (i < main.counter)
+	T_MIN = 0.001;
+	T_MAX = 1;
+	while (++i < main.counter)
 	{
-		if (ft_strcmp("sphere", main.figure[i].type) == 0)
+		ft_strcmp("sphere", TYPE) == 0 ? minus_vect(main.p, POS, &OC) : 0;
+		ft_strcmp("sphere", TYPE) == 0 ?
+			main = intersect_ray(main, L, OC, RADIUS) : main;
+		if (ft_strcmp("plane", TYPE) == 0)
 		{
-			minus_vect(main.p, main.figure[i].pos, &main.oc);
-			main = intersect_ray(main, main.l, main.oc, main.figure[i].radius);
-		}
-		else if (ft_strcmp("plane", main.figure[i].type) == 0)
-		{
-			closest_plane = calc_plane(main, main.oc, i);
-			if (closest_plane > t_min && closest_plane < t_max && closest_plane < (shadow_t))
-			{
-				(shadow_t) = closest_plane;
-				(shadow_sphere) = i;
-			}
-			i++;
+			cl_pl = calc_plane(main, OC, i);
+			cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (s_t) ? s_t = cl_pl : 0;
+			cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (s_t) ? s_fig = i : 0;
 			continue ;
 		}
-		else if (ft_strcmp("cylinder", main.figure[i].type) == 0)
-			main = cylinder_ray(main, main.figure[i].radius, i, 1);
-		if (main.t1 > t_min && main.t1 < t_max && main.t1 < (shadow_t))
-		{
-			(shadow_t) = main.t1;
-			(shadow_sphere) = i;
-		}
-		if (main.t2 > t_min && main.t2 < t_max && main.t2 < (shadow_t))
-		{
-			(shadow_t) = main.t2;
-			(shadow_sphere) = i;
-		}
-		i++;
+		else if (ft_strcmp("cylinder", TYPE) == 0)
+			main = cylinder_ray(main, RADIUS, i, 1);
+		else if (ft_strcmp("cone", TYPE) == 0)
+			main = cone_ray(main, i, 1);
+		chk_closest_t(main, &s_t, &s_fig, i);
 	}
-	return (shadow_sphere);
+	return (s_fig);
 }
 
-double	compute_light(t_main main, int spec, int closest_sphere)
+double			specular(t_main main, double j, int i, double spec)
 {
-	double j = 0.0;
-	int    i1 = 0;
-	double n_dot;
-	double r_dot;
-	double t_max = 1;
-	int shadow_sphere;
-	closest_sphere = 1;
+	double		r_dot;
 
-	while (i1 < 3)
+	main = find_r(main);
+	rewrite_vect(&main.v, main.dir.dir);
+	mult_vect(&main.v, -1.0);
+	r_dot = dot(main.r, main.v);
+	r_dot > 0 ? j += main.light[i].intensivity * (double)pow(r_dot
+		/ (find_vect_lenght(main.r) * find_vect_lenght(main.v)), spec) : 0;
+	return (j);
+}
+
+double			compute_light(t_main main, int spec, double j, int i1)
+{
+	double		n_dot;
+	int			shadow_figure;
+
+	while (++i1 < 3)
 	{
-		shadow_sphere = -1;
+		shadow_figure = -1;
 		if (ft_strcmp(main.light[i1].type, "ambient") == 0)
 			j += main.light[i1].intensivity;
 		else
 		{
-			minus_vect(main.light[i1].pos, main.p, &main.l); // find L
-			shadow_sphere = closest_t_and_shadow_sphere(main, shadow_sphere, closest_sphere, t_max);
-			if (shadow_sphere != -1 && i1++ > -1)
-				continue;
+			minus_vect(main.light[i1].pos, main.p, &main.l);
+			T_MAX = 1;
+			shadow_figure = cl_t_s_fig(main, -1, INFINITY, -1);
+			if (shadow_figure != -1)
+				continue ;
 			n_dot = dot(main.normal, main.l);
-			if (n_dot > 0)
-				j += (main.light[i1].intensivity * n_dot) / (find_vect_lenght(main.normal) * find_vect_lenght(main.l));
-			if (spec != -1)
-			{
-				main = find_r(main);
-				rewrite_vect(&main.v, main.dir.dir);
-				mult_vect(&main.v, -1.0);
-				r_dot = dot(main.r, main.v);
-				if (r_dot > 0)
-					j += main.light[i1].intensivity * (double)pow(r_dot / (find_vect_lenght(main.r) * find_vect_lenght(main.v)), spec);
-			}
+			n_dot > 0 ? j += (main.light[i1].intensivity * n_dot) /
+				(find_vect_lenght(main.normal) * find_vect_lenght(main.l)) : 0;
+			spec != -1 ? j = specular(main, j, i1, spec) : 0;
 		}
-		i1++;
 	}
 	return (j);
-}
-
-unsigned int	what_color(t_main main, int t_min, double t_max)
-{
-	double closest_t = INFINITY;
-	int closest_sphere = -1;
-	double comp_light;
-
-	closest_t_and_sphere(main, &closest_t, &closest_sphere, t_min, t_max);
-	if (closest_sphere == -1)
-		return (0);
-	main = find_p(main, closest_t);
-	main = find_normale(main, closest_sphere);
-	comp_light = compute_light(main, main.figure[closest_sphere].spec, closest_sphere);
-	return (return_col(main, comp_light, closest_sphere));	
 }
