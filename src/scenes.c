@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:22:30 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/24 18:23:46 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/25 15:53:46 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_main	scene_1(t_main main)
 {
+	main.counter = 16;
+	main.figure = malloc(sizeof(t_figure) * 15);
 	main.figure[0].type = ft_strdup("plane");
 	main.figure[0].pos.x = 0;
 	main.figure[0].pos.y = -2;
@@ -57,7 +59,9 @@ t_main	scene_1(t_main main)
 
 t_main	set_figures_params(t_main main)
 {
-	main = scene_1(main);
+	// main = scene_1(main);
+	main = scene_2(main);
+	// main = scene_3(main);
 	return (main);
 }
 
@@ -150,7 +154,7 @@ t_main	set_spheres_params(t_main main)
 	main.figure[15].radius = 0.8;
 	main.figure[15].color.r = 200;
 	main.figure[15].color.g = 0;
-	main.figure[15].color.b = 0;
+	main.figure[15].color.b = 200;
 	main.figure[15].spec = 1000.0;
 
 	return (main);

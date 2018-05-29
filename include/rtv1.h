@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:21:02 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/24 14:41:50 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/25 14:21:08 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define VIEW_W 1
 # define VIEW_H 1
 # define D 1
+# define PI 3.14159265359
 
 typedef struct	s_sdl
 {
@@ -76,6 +77,7 @@ typedef	struct	s_figure
 	t_color		color;
 	double		spec;
 	t_vector	dir;
+	int			angle;
 }				t_figure;
 
 typedef struct	s_ray_dir
@@ -105,6 +107,9 @@ typedef struct	s_main
 	int 		go;
 	int			*screencolor;
 	int 		shadow;
+	double		dist;
+	int 		counter;
+	double		k;
 }				t_main;
 
 
@@ -132,4 +137,13 @@ void	rtv(t_main main);
 void	normalize(t_vector *vector);
 t_main	scene_1(t_main main);
 t_main	set_spheres_params(t_main main);
+t_main	scene_2(t_main main);
+void	update_screen(t_main main);
+t_main		intersect_ray(t_main main, t_vector vector1, t_vector vector2, double radius);
+double		calc_plane(t_main main, t_vector x, int i);
+t_main		cylinder_ray(t_main main, double radius, int i, int k);
+unsigned int 	return_col(t_main main, double comp_light, int closest_sphere);
+unsigned int	what_color(t_main main, int t_min, double t_max);
+t_main		cone_ray(t_main main, int i);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:20:36 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/24 19:58:29 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/25 15:55:57 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,6 @@ t_main	canvastoviewport(int x, int y, t_main main)
 	return (main);
 }
 
-// t_main	find_l(t_main main, int i1)
-// {
-	
-// 	return (main);
-// }
 
 t_main	find_r(t_main main)
 {
@@ -107,7 +102,7 @@ void	set_viewport_params_and_cam(t_main *main)
 	main->viewport.view.z = 1;
 	main->cam.cam.x = 0;
 	main->cam.cam.y = 0;
-	main->cam.cam.z = 0;
+	main->cam.cam.z = -5;
 	main->screencolor = malloc(sizeof(int) * (WINH * WINW));
 }
 
@@ -117,14 +112,14 @@ t_main	lighter(t_main main)
 	main.light[0].intensivity = 0.2;
 	main.light[1].type = ft_strdup("point");
 	main.light[1].intensivity = 0.4;
-	main.light[1].pos.x = 0;
+	main.light[1].pos.x = -15;
 	main.light[1].pos.y = 0;
-	main.light[1].pos.z = 8;
+	main.light[1].pos.z = 0;
 	main.light[2].type = ft_strdup("point");
 	main.light[2].intensivity = 0.4;
-	main.light[2].pos.x = 0;
+	main.light[2].pos.x = 15;
 	main.light[2].pos.y = 0;
-	main.light[2].pos.z = 8;
+	main.light[2].pos.z = 0;
 	main.light[4].type = ft_strdup("directional");
 	main.light[4].intensivity = 0.6;
 	main.light[4].dir.x = -4;
@@ -147,7 +142,6 @@ void	rtv(t_main main)
 {
 	main = create_sdl(main);
 	set_viewport_params_and_cam(&main);
-	main.figure = malloc(sizeof(t_figure) * 15);
 	main.light = malloc(sizeof(t_light) * 10);
 	main = set_figures_params(main);
 	main = lighter(main);

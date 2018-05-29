@@ -6,7 +6,7 @@
 #    By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 14:54:43 by bpodlesn          #+#    #+#              #
-#    Updated: 2018/05/24 14:24:54 by bpodlesn         ###   ########.fr        #
+#    Updated: 2018/05/25 14:20:30 by bpodlesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,10 @@ SOURCES =  main.c \
 			math.c \
 			trace_ray.c \
 			scenes.c \
+			scene_2.c \
+			calc_prims.c \
+			ret_color.c \
+			update_screen.c \
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
