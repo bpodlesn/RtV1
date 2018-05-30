@@ -6,13 +6,13 @@
 #    By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 14:54:43 by bpodlesn          #+#    #+#              #
-#    Updated: 2018/05/29 17:06:35 by bpodlesn         ###   ########.fr        #
+#    Updated: 2018/05/30 18:19:24 by bpodlesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang
 
-NAME = rtv1
+NAME = RTv1
 
 FLAGS = -Wall -Wextra -Werror -O3
 
@@ -43,7 +43,10 @@ SOURCES =  main.c \
 			math_vect.c \
 			trace_ray.c \
 			scenes.c \
+			scene_1.c \
 			scene_2.c \
+			scene_3.c \
+			scene_4.c \
 			calc_prims.c \
 			ret_color.c \
 			update_screen.c \

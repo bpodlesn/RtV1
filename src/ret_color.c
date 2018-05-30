@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 14:19:12 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/29 17:08:25 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/30 16:23:21 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ unsigned int		return_col(t_main main, double comp_light, int cl_fig)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int	what_color(t_main main)
+unsigned int		what_color(t_main main)
 {
-	double		closest_t;
-	int			closest_figure;
-	double		comp_light;
+	double			closest_t;
+	int				closest_figure;
+	double			comp_light;
 
 	closest_t = INFINITY;
 	closest_figure = -1;
@@ -46,6 +46,6 @@ unsigned int	what_color(t_main main)
 		return (0);
 	main = find_p(main, closest_t);
 	main = find_normale(main, closest_figure);
-	comp_light = compute_light(main, main.figure[closest_figure].spec, 0.0, -1);
+	comp_light = compute_light(main, closest_figure, 0.0, -1);
 	return (return_col(main, comp_light, closest_figure));
 }

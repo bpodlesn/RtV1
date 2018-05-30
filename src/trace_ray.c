@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 15:08:26 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/29 17:09:10 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/30 17:55:38 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void			cl_t_and_fig(t_main main, double *cl_t, int *cl_fig, int i)
 			main = intersect_ray(main, main.dir.dir, OC, RADIUS);
 		else if (ft_strcmp("plane", TYPE) == 0)
 		{
-			cl_pl = calc_plane(main, OC, i);
+			cl_pl = calc_plane(main, OC, i, 0);
 			if (cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (*cl_t))
 			{
 				(*cl_t) = cl_pl;
@@ -59,7 +59,7 @@ int				cl_t_s_fig(t_main main, int i, double s_t, int s_fig)
 {
 	double		cl_pl;
 
-	T_MIN = 0.001;
+	T_MIN = 0.0000001;
 	T_MAX = 1;
 	while (++i < main.counter)
 	{
@@ -68,8 +68,13 @@ int				cl_t_s_fig(t_main main, int i, double s_t, int s_fig)
 			main = intersect_ray(main, L, OC, RADIUS) : main;
 		if (ft_strcmp("plane", TYPE) == 0)
 		{
-			cl_pl = calc_plane(main, OC, i);
-			cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (s_t) ? s_t = cl_pl : 0;
+			// minus_vect(main.p, POS, &OC);
+			cl_pl = calc_plane(main, OC, i, 1);
+			// printf("%f\n", cl_pl);
+			// if (cl_pl == 0)
+			// 	return (1);
+			// s_t = cl_pl;
+			// cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (s_t) ? s_t = cl_pl : 0;
 			cl_pl > T_MIN && cl_pl < T_MAX && cl_pl < (s_t) ? s_fig = i : 0;
 			continue ;
 		}
@@ -95,17 +100,17 @@ double			specular(t_main main, double j, int i, double spec)
 	return (j);
 }
 
-double			compute_light(t_main main, int spec, double j, int i1)
+double			compute_light(t_main main, int i, double j, int i1)
 {
 	double		n_dot;
 	int			shadow_figure;
 
-	while (++i1 < 3)
+	while (++i1 < main.li)
 	{
 		shadow_figure = -1;
 		if (ft_strcmp(main.light[i1].type, "ambient") == 0)
 			j += main.light[i1].intensivity;
-		else
+		else if (ft_strcmp(main.light[i1].type, "point") == 0)
 		{
 			minus_vect(main.light[i1].pos, main.p, &main.l);
 			T_MAX = 1;
@@ -115,7 +120,8 @@ double			compute_light(t_main main, int spec, double j, int i1)
 			n_dot = dot(main.normal, main.l);
 			n_dot > 0 ? j += (main.light[i1].intensivity * n_dot) /
 				(find_vect_lenght(main.normal) * find_vect_lenght(main.l)) : 0;
-			spec != -1 ? j = specular(main, j, i1, spec) : 0;
+			if (ft_strcmp(main.figure[i].type, "plane") != 0)
+				main.figure[i].spec != -1 ? j = specular(main, j, i1, main.figure[i].spec) : 0;
 		}
 	}
 	return (j);

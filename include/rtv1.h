@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:21:02 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/29 17:15:23 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/30 16:44:10 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct	s_main
 	double		dist;
 	int			counter;
 	double		k;
+	int			li;
 }				t_main;
 
 double			dot(t_vector first, t_vector second);
@@ -139,22 +140,33 @@ t_main			find_r(t_main main);
 t_main			find_normale(t_main main, int i);
 t_main			find_p(t_main main, double closest_t);
 void			set_viewport_params_and_cam(t_main *main);
-t_main			set_figures_params(t_main main, char str);
+t_main			set_figures_params(t_main main, char *str);
 t_main			set_plane_params(t_main main);
-t_main			lighter(t_main main);
+void			light_1(t_main *main);
+void			light_2(t_main *main);
+void			light_3(t_main *main);
 void			rtv(t_main main, char *av);
 void			normalize(t_vector *vector);
 t_main			scene_1(t_main main);
 t_main			set_spheres_params(t_main main);
+t_main			set_spheres_params_2(t_main main);
+t_main			set_cylinder_params(t_main main);
 t_main			scene_2(t_main main);
 void			update_screen(t_main main);
 t_main			intersect_ray(t_main main, t_vector v1, t_vector v2,
 				double rad);
-double			calc_plane(t_main main, t_vector x, int i);
+double			calc_plane(t_main main, t_vector x, int i, int k);
 t_main			cylinder_ray(t_main main, double radius, int i, int k);
 unsigned int	return_col(t_main main, double comp_light, int closest_sphere);
 unsigned int	what_color(t_main main);
 t_main			cone_ray(t_main main, int i, int k);
 t_main			scene_2_1(t_main main);
+void			update(t_vector *v, double a, double b, double c);
+void			update_color(t_color *v, int a, int b, int c);
+t_main			scene_3(t_main main);
+t_main			scene_3_1(t_main main);
+void			light_4(t_main *main);
+t_main			scene_4(t_main main);
+t_main	scene_4_1(t_main main);
 
 #endif

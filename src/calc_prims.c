@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 14:17:53 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/29 17:01:40 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/30 17:21:11 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,30 @@ t_main			intersect_ray(t_main main, t_vector v1, t_vector v2, double rad)
 	return (main);
 }
 
-double			calc_plane(t_main main, t_vector x, int i)
+double			calc_plane(t_main main, t_vector x, int i, int k)
 {
 	t_vector	v;
+	t_vector	q;
 	double		t;
 
+	if (k == 0)
+	{
+		minus_vect(main.cam.cam, POS, &x);
+		rewrite_vect(&q, DIR);
+	}
+	else
+	{
+		minus_vect(main.p, POS, &x);
+		rewrite_vect(&q, main.l);
+	}
 	rewrite_vect(&v, FDIR);
 	normalize(&v);
 	mult_vect(&x, -1.0);
-	t = dot(x, v) / dot(DIR, v);
-	mult_vect(&v, -1.0);
+	t = dot(x, v) / dot(q, v);
+	// if (k == 1)
+		mult_vect(&v, -1.0);
 	rewrite_vect(&main.normal, v);
+	// normalize(&main.normal);
 	return (t);
 }
 
@@ -82,9 +95,9 @@ t_main			cone_ray(t_main main, int i, int k)
 	k == 0 ? minus_vect(main.cam.cam, POS, &OC) : minus_vect(main.p, POS, &OC);
 	normalize(&FDIR);
 	main.k = tan((main.figure[i].angle / 2) * PI / 180);
-	result[0] = dot(DIR, DIR) - (1 + pow(main.k, 2)) * pow(dot(DIR, FDIR), 2);
-	result[1] = 2 * (dot(DIR, OC) - (1 + pow(main.k, 2)) *
-		dot(DIR, FDIR) * (dot(OC, FDIR)));
+	result[0] = dot(v, v) - (1 + pow(main.k, 2)) * pow(dot(v, FDIR), 2);
+	result[1] = 2 * (dot(v, OC) - (1 + pow(main.k, 2)) *
+		dot(v, FDIR) * (dot(OC, FDIR)));
 	result[2] = dot(OC, OC) - (1 + pow(main.k, 2)) * pow(dot(OC, FDIR), 2);
 	discriminant = pow(result[1], 2) - (4 * result[0] * result[2]);
 	if (discriminant < 0)

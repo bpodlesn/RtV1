@@ -6,7 +6,7 @@
 /*   By: bpodlesn <bpodlesn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 12:20:36 by bpodlesn          #+#    #+#             */
-/*   Updated: 2018/05/29 16:27:20 by bpodlesn         ###   ########.fr       */
+/*   Updated: 2018/05/30 17:40:10 by bpodlesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,27 @@ void			set_viewport_params_and_cam(t_main *main)
 	main->cam.cam.x = 0;
 	main->cam.cam.y = 0;
 	main->cam.cam.z = -5;
-	main->screencolor = malloc(sizeof(int) * (WINH * WINW));
+	main->screencolor = malloc(sizeof(int) * (WINH * WINW) + 1);
 }
 
 void			rtv(t_main main, char *av)
 {
 	main = create_sdl(main);
 	set_viewport_params_and_cam(&main);
-	main.light = malloc(sizeof(t_light) * 10);
-	main = set_figures_params(main, *av);
-	main = lighter(main);
+	main = set_figures_params(main, av);
+	if (ft_strcmp("1", av) == 0)
+		light_1(&main);
+	else if (ft_strcmp("2", av) == 0)
+		light_2(&main);
+	else if (ft_strcmp("3", av) == 0)
+		light_3(&main);
+	else if (ft_strcmp("4", av) == 0)
+		light_4(&main);
+	else
+	{
+		ft_putendl("Choose scene (1, 2, 3, 4)");
+		main.done = 1;
+	}
 	main.go = 0;
 	while (!main.done)
 	{
@@ -74,6 +85,6 @@ int				main(int argc, char **argv)
 	if (argc == 2)
 		rtv(main, argv[1]);
 	else
-		ft_putendl("Choose scene(1,2).");
+		ft_putendl("Choose scene (1, 2, 3, 4).");
 	return (0);
 }
